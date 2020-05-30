@@ -14,7 +14,9 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 def start(update, context):
     context.bot.send_chat_action(chat_id=update.message.chat_id, action=ChatAction.TYPING)
 
-    msg = "Olá, eu sou o Bot IA. Digite o comando desejado:\n /busca - Retorna o caminho e custo entre 2 pontos"
+    msg = "Olá, eu sou o Bot IA. Digite o comando desejado:\n" \
+          "1 - /busca P1 P2: Retorna o caminho e custo entre 2 pontos de A até U.\n" \
+          "Ex: /busca C T (vai retornar o caminho e custo entre o ponto C e T)"
 
     context.bot.send_message(chat_id=update.message.chat_id, text=msg, parse_mode=ParseMode.MARKDOWN)
 
@@ -22,37 +24,35 @@ def start(update, context):
 def busca(update, context):
     context.bot.send_chat_action(chat_id=update.message.chat_id, action=ChatAction.TYPING)
 
-    msg = 'Digite 2 pontos entre A e U em maiúsculo e separados por espaço, para descobrir o menor caminho e o custo entre eles. ' \
-          '\n Ex: A Q'
-
-    context.bot.send_message(chat_id=update.message.chat_id, text=msg, parse_mode=ParseMode.MARKDOWN)
-
-
-def caminho(update, context):
-    context.bot.send_chat_action(chat_id=update.message.chat_id, action=ChatAction.TYPING)
-
-    text_answer = update.message.text
-    list = text_answer.split()
-    v1 = list[0]
-    v2 = list[1]
-
+    v1 = context.args[0].upper()
+    v2 = context.args[1].upper()
     msg = searchPath(v1, v2)
 
     context.bot.send_message(chat_id=update.message.chat_id, text=msg, parse_mode=ParseMode.MARKDOWN)
 
 
 start_handler = CommandHandler('start', start)
-busca_handler = CommandHandler('busca', busca)
-caminho_handler = MessageHandler(Filters.text, caminho)
-
+busca_handler = CommandHandler('busca', busca, pass_args=True)
 
 dispatcher.add_handler(start_handler)
 dispatcher.add_handler(busca_handler)
-dispatcher.add_handler(caminho_handler)
 
 updater.start_polling()
 
 updater.idle()
+
+# def caminho(update, context):
+#    context.bot.send_chat_action(chat_id=update.message.chat_id, action=ChatAction.TYPING)
+#
+#    text_answer = update.message.text
+#    text = text_answer.upper()
+#   list = text.split()
+#    v1 = list[0]
+#    v2 = list[1]
+
+#    msg = searchPath(v1, v2)
+
+#    context.bot.send_message(chat_id=update.message.chat_id, text=msg, parse_mode=ParseMode.MARKDOWN)
 
 # def echo(update, context):
 #    context.bot.send_chat_action(chat_id=update.message.chat_id, action=ChatAction.TYPING)
@@ -81,10 +81,13 @@ updater.idle()
 #   update.message.reply_text('Tudo bem, mas quando quiser que eu reconheça uma imagem é só anexar.',
 #                             reply_markup=ReplyKeyboardRemove())
 
+
+# caminho_handler = MessageHandler(Filters.text, caminho)
 # registernew_handler = MessageHandler(Filters.regex('(Sim|Não)$'), register_new)
 # echo_handler = MessageHandler(Filters.text, echo)
 # unknown_handler = MessageHandler(Filters.command, unknown)
 
+# dispatcher.add_handler(caminho_handler)
 # dispatcher.add_handler(registernew_handler)
 # dispatcher.add_handler(echo_handler)
 # dispatcher.add_handler(unknown_handler)
