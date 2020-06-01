@@ -1,8 +1,7 @@
-from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove)
 from telegram import ParseMode, ChatAction
 from telegram.ext import Updater
-from telegram.ext import CommandHandler, MessageHandler, Filters, RegexHandler
-from untitled.Busca import searchPath
+from telegram.ext import CommandHandler
+from untitled.BotBusca.Busca import searchPath
 import logging
 
 updater = Updater(token='1101037221:AAHYw9MDlyLCD_njw_ZsZTZHMjp1Wceu3h8', use_context=True)
