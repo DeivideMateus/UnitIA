@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 idx = pd.IndexSlice
 links = pd.read_csv("links.csv", index_col=['movieId'])
 movies = pd.read_csv("movies.csv", sep=",", index_col=['movieId'])
@@ -80,7 +79,6 @@ for user in all_users:
 
 
 def recomendacao(user):
-
     selected_user = user
 
     my_movies = get_movies_by_user(selected_user, rating_cut=4, list_=True)
@@ -103,7 +101,14 @@ def recomendacao(user):
     return all_movies
 
 
+def getRecomendacao(user):
+    filmes = recomendacao(user)
+    count = 1
+    msg = ""
+    for movie in filmes[:10]:
+        msg = msg + "\n" + str(count) + " " + get_movie_title(movie)
+        count += 1
 
-
+    return msg
 
 
